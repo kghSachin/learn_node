@@ -1,0 +1,19 @@
+{
+  "name": "backend-work",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run server"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kghSachin/backend-work.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kghSachin/backend-work/issues"
+  },
+  "homepage": "https://github.com/kghSachin/backend-work#readme"
+}
