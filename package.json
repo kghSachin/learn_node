@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "server": "nodemon src/index.js",
     "test": "npm run server"
   },
   "repository": {
@@ -15,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/kghSachin/backend-work/issues"
   },
-  "homepage": "https://github.com/kghSachin/backend-work#readme"
+  "homepage": "https://github.com/kghSachin/backend-work#readme",
+  "dependencies": {
+    "express": "^4.19.2"
+  }
 }
