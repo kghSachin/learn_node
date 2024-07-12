@@ -1,5 +1,6 @@
-import prisma from "../DB/db.config.js";
+import prisma from "../../DB/db.config.js";
 import ApiResponse from "../utils/api_response.js";
+import uploadOnCloudinary from "../utils/cloudinary.config.js";
 import { ApiError } from "../utils/error_response.js";
 export class EmployeeController {
   static async getHealth(req, res, next) {
@@ -45,7 +46,42 @@ export class EmployeeController {
 
   static async createEmployee(req, res, next) {
     try {
-      res.status(201).json({ message: "Employee created successfully" });
+      const { name, title, phoneNumber } = req.body;
+      const localFilePath = req.files?.picture[0]?.path;
+      if (!name || !title || !phoneNumber || !localFilePath) {
+        return res
+          .status(400)
+          .json(new ApiError(400, "All fields are required", []));
+      }
+      const response = await uploadOnCloudinary(
+        localFilePath,
+        "employee",
+        "png" || "jpg" || "jpeg"
+      );
+      if (!response) {
+        return res
+          .status(500)
+          .json(new ApiError(500, "Image upload failed", []));
+      }
+      const employee = await prisma.employee.create({
+        data: {
+          name,
+          title,
+          number: phoneNumber,
+          imageUrl: response.secure_url,
+        },
+      });
+      if (!employee) {
+        return res
+          .status(400)
+          .json(new ApiError(400, "Employee not saved", []));
+      }
+
+      res
+        .status(201)
+        .json(
+          new ApiResponse(201, { employee }, "Employee saved successfully")
+        );
     } catch (error) {
       next(error);
     }
@@ -53,27 +89,6 @@ export class EmployeeController {
   static async getEmployees(req, res, next) {
     try {
       res.status(200).json({ message: "Employees fetched successfully" });
-    } catch (error) {
-      next(error);
-    }
-  }
-  static async getEmployee(req, res, next) {
-    try {
-      res.status(200).json({ message: "Employee fetched successfully" });
-    } catch (error) {
-      next(error);
-    }
-  }
-  static async updateEmployee(req, res, next) {
-    try {
-      res.status(200).json({ message: "Employee updated successfully" });
-    } catch (error) {
-      next(error);
-    }
-  }
-  static async deleteEmployee(req, res, next) {
-    try {
-      res.status(200).json({ message: "Employee deleted successfully" });
     } catch (error) {
       next(error);
     }

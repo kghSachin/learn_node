@@ -18,3 +18,14 @@ model PhoneNumber {
   number    String   @unique
   createdAt DateTime @default(now())
 }
+
+model Employee {
+  id        String   @id @default(cuid())
+  name      String
+  number    String
+  title     String
+  imageUrl  String
+  createdAt DateTime @default(now())
+}
+
+
