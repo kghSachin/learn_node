@@ -7,6 +7,8 @@ export class NoticeController {
   static async createNotice(req, res) {
     try {
       const { title, body } = req.body;
+      console.log(req.files);
+
       const localFilePath = req.files?.noticeFiles[0]?.path;
       if (!title) {
         return res
@@ -44,4 +46,5 @@ export class NoticeController {
         .json(new ApiError(500, "Internal server error", error));
     }
   }
+  static async editNotice(req, res) {}
 }

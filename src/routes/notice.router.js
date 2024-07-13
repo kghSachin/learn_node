@@ -8,7 +8,7 @@ noticeRouter.route("/create_notice").post(
   upload.fields([
     {
       name: "noticeFiles",
-      maxCount: 1,
+      maxCount: 3,
     },
   ]),
   NoticeController.createNotice
