@@ -28,4 +28,9 @@ model Employee {
   createdAt DateTime @default(now())
 }
 
-
+model Notice {
+  id      String  @id @default(cuid())
+  title   String
+  body    String?
+  fileUrl String?
+}
