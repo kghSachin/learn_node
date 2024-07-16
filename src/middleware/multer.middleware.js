@@ -11,14 +11,14 @@ const storage = multer.diskStorage({
 
 export const upload = multer({
   storage: storage,
-  fileFilter: (req, file, cb) => {
-    if (
-      file.mimetype.includes("image") ||
-      file.mimetype.includes("application/pdf")
-    ) {
-      cb(null, true);
-    } else {
-      cb(new Error("Only images and pdf are allowed"));
-    }
-  },
+  // fileFilter: (req, file, cb) => {
+  // if (
+  //   file.mimetype.includes("image") ||
+  //   file.mimetype.includes("application/pdf")
+  // ) {
+  //   cb(null, true);
+  // } else {
+  //   cb(new Error("Only images and pdf are allowed"));
+  // }
+  // },
 });

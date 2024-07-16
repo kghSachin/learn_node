@@ -13,5 +13,8 @@ noticeRouter.route("/create_notice").post(
   ]),
   NoticeController.createNotice
 );
+noticeRouter.patch("/update_notice/:id", NoticeController.editNotice);
+noticeRouter.delete("/delete_notice/:id", NoticeController.deleteNotice);
+noticeRouter.get("/notice", NoticeController.getNotice);
 
 export default noticeRouter;
