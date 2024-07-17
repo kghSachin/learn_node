@@ -16,6 +16,7 @@ router.route("/create_employee").post(
   ]),
   EmployeeController.createEmployee
 );
+router.get("/get_employee", EmployeeController.getEmployees);
 router.post("/phone_number", EmployeeController.collectPhoneNumbers);
 
 export default router;

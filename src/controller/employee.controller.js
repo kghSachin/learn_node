@@ -88,7 +88,13 @@ export class EmployeeController {
   }
   static async getEmployees(req, res, next) {
     try {
-      res.status(200).json({ message: "Employees fetched successfully" });
+      const employees = await prisma.employee.findMany();
+      if (employees) {
+        return res
+          .status(200)
+          .json(new ApiResponse(200, employees, "Employees"));
+      }
+      return res.status(404).json(new ApiError(404, "No employee found", []));
     } catch (error) {
       next(error);
     }
