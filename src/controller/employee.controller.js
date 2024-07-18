@@ -110,7 +110,7 @@ export class EmployeeController {
         "rojgari",
         "png" || "jpg" || "jpeg"
       );
-      console.log("k cloudinary le dhoka kiya humse gaddari");
+
       if (!response) {
         return res
           .status(500)

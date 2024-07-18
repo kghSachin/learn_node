@@ -16,12 +16,12 @@ export const verifyJWT = async (req, res, next) => {
         .json(new ApiErrorError(401, "Unauthorized request", []));
     }
     const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    console.log("decoded token is ", decodedToken);
+    // console.log("decoded token is ", decodedToken);
     if (!decodedToken)
       return res
         .status(401)
         .json(new ApiError(401, "Unauthorized request", []));
-    console.log("decoded token is ", decodedToken);
+    // console.log("decoded token is ", decodedToken);
     const user = await prisma.user.findUnique({
       where: {
         id: decodedToken.id,
