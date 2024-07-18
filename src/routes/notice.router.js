@@ -1,10 +1,12 @@
 import express from "express";
 import { upload } from "../middleware/multer.middleware.js";
 import { NoticeController } from "../controller/notice.controller.js";
+import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const noticeRouter = express.Router();
 
 noticeRouter.route("/create_notice").post(
+  verifyJWT,
   upload.fields([
     {
       name: "noticeFiles",

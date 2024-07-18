@@ -26,13 +26,16 @@ model Employee {
   title     String
   imageUrl  String
   createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model Notice {
-  id      String  @id @default(cuid())
-  title   String
-  body    String?
-  fileUrl String?
+  id        String   @id @default(cuid())
+  title     String
+  body      String?
+  fileUrl   String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }
 
 model User {
@@ -46,4 +49,16 @@ model User {
 enum Role {
   ADMIN
   USER
+}
+
+model Rojgari {
+  id        String   @id @default(cuid())
+  name      String
+  number    String
+  title     String
+  address   String
+  info      String?
+  imageUrl  String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 }

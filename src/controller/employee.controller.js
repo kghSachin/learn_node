@@ -86,6 +86,93 @@ export class EmployeeController {
       next(error);
     }
   }
+  static async createRojgariBibaranEmployee(req, res, next) {
+    try {
+      const { name, title, phoneNumber, address, info } = req.body;
+      const localFilePath = req.files?.image[0]?.path;
+      if (!name || !title || !phoneNumber || !localFilePath || !address) {
+        return res
+          .status(400)
+          .json(
+            new ApiError(400, "All fields are required", [
+              "name",
+              "title",
+              "phoneNumber",
+              "address",
+              "image",
+            ])
+          );
+      }
+
+      console.log(name, title, phoneNumber, localFilePath);
+      const response = await uploadOnCloudinary(
+        localFilePath,
+        "rojgari",
+        "png" || "jpg" || "jpeg"
+      );
+      console.log("k cloudinary le dhoka kiya humse gaddari");
+      if (!response) {
+        return res
+          .status(500)
+          .json(
+            new ApiError(
+              500,
+              "Image upload failed, unable to create rojgari bibaran ",
+              []
+            )
+          );
+      }
+      const rojgarYuva = await prisma.rojgari.create({
+        data: {
+          name,
+          number: phoneNumber,
+          title,
+          address,
+          info,
+          imageUrl: response.secure_url,
+        },
+      });
+      if (!rojgarYuva) {
+        return res
+          .status(400)
+          .json(new ApiError(400, "rojgari bibaran  not saved", []));
+      }
+
+      res
+        .status(201)
+        .json(
+          new ApiResponse(
+            201,
+            rojgarYuva,
+            "rojgari bibaran  saved successfully"
+          )
+        );
+    } catch (error) {
+      return res
+        .status(500)
+        .json(new ApiError(500, "Internal server error ", error || []));
+    }
+  }
+  // This is a static method that is used to fetch all the users.
+  static async getRojgariBibaran(req, res) {
+    try {
+      const rojgari = await prisma.rojgari.findMany();
+      if (rojgari) {
+        return res
+          .status(200)
+          .json(new ApiResponse(200, rojgari, "Rojgari Bibaran"));
+      }
+      return res
+        .status(404)
+        .json(new ApiError(404, "No rojgari bibaran found", []));
+    } catch (error) {
+      return res
+        .status(500)
+        .json(new ApiError(500, "Internal server error ", error || []));
+    }
+  }
+
+  // to fetch all the users.
   static async getEmployees(req, res, next) {
     try {
       const employees = await prisma.employee.findMany();
@@ -96,7 +183,9 @@ export class EmployeeController {
       }
       return res.status(404).json(new ApiError(404, "No employee found", []));
     } catch (error) {
-      next(error);
+      return res
+        .status(500)
+        .json(new ApiError(500, "Internal server error ", error || []));
     }
   }
 }

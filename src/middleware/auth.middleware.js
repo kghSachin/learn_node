@@ -1,21 +1,44 @@
 import jwt from "jsonwebtoken";
 import { ApiError } from "../utils/error_response.js";
+import prisma from "../../DB/db.config.js";
 
 export const verifyJWT = async (req, res, next) => {
   try {
+    console.log("request headers", req.headers);
     const token =
       req.cookies?.accessToken ||
       req.header("Authorization")?.replace("Bearer ", "");
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.user = decoded;
+
+    console.log("token is ", token);
+    if (!token) {
+      return res
+        .status(401)
+        .json(new ApiErrorError(401, "Unauthorized request", []));
+    }
+    const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+    console.log("decoded token is ", decodedToken);
+    if (!decodedToken)
+      return res
+        .status(401)
+        .json(new ApiError(401, "Unauthorized request", []));
+    console.log("decoded token is ", decodedToken);
+    const user = await prisma.user.findUnique({
+      where: {
+        id: decodedToken.id,
+      },
+    });
+    if (!user) {
+      return res.status(401).json(new ApiError(401, "user not found", []));
+    }
+    req.user = user;
     next();
   } catch (error) {
-    return res
-      .status(500)
+    res
+      .status(401)
       .json(
         new ApiError(
-          500,
-          "Internal server error",
+          401,
+          "unable to verify the token",
           error.message || "invalid access token"
         )
       );

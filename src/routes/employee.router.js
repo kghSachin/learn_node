@@ -17,6 +17,17 @@ router.route("/create_employee").post(
   EmployeeController.createEmployee
 );
 router.get("/get_employee", EmployeeController.getEmployees);
+router.get("/get_bibaran", EmployeeController.getRojgariBibaran);
 router.post("/phone_number", EmployeeController.collectPhoneNumbers);
+router.post(
+  "/create-rojgari-bibaran",
+  upload.fields([
+    {
+      name: "image",
+      maxCount: 1,
+    },
+  ]),
+  EmployeeController.createRojgariBibaranEmployee
+);
 
 export default router;

@@ -6,6 +6,16 @@ import { ApiError } from "../utils/error_response.js";
 export class NoticeController {
   static async createNotice(req, res) {
     try {
+      const user = req.user;
+      if (!user) {
+        return res.status(401).json(new ApiError(401, " Not Authenticated "));
+      }
+      console.log(user);
+      if (user.role !== "ADMIN") {
+        return res
+          .status(403)
+          .json(new ApiError(403, "You are not authorized to create notice"));
+      }
       const { title, body } = req.body;
       console.log(req.files);
 
