@@ -122,4 +122,26 @@ export class GalleryController {
       res.status(500).json(new ApiError(500, "Internal server error", error));
     }
   }
+  static async getGalleryNotice(req, res) {
+    try {
+      const gallery = await prisma.gallery.findMany();
+      const itemCount = gallery.length;
+      if (gallery) {
+        return res
+          .status(200)
+          .json(
+            new ApiResponse(
+              200,
+              { gallery, itemCount },
+              "Gallery fetched successfully"
+            )
+          );
+      }
+      return res
+        .status(400)
+        .json(new ApiError(400, "unable to fetch the gallery"));
+    } catch (error) {
+      res.status(500).json(new ApiError(500, "Internal server error", error));
+    }
+  }
 }

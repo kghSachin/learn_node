@@ -16,4 +16,5 @@ galleryRouter.delete(
   verifyJWT,
   GalleryController.deleteGalleryNotice
 );
+galleryRouter.get("/get_gallery", GalleryController.getGalleryNotice);
 export default galleryRouter;
