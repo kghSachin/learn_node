@@ -93,6 +93,32 @@ export class GalleryController {
       .json(new ApiError(400, "unable to update the gallery"));
   }
 
+  static async fetchGalleryById(req, res) {
+    try {
+      const id = req.params.id;
+      if (!id) {
+        return res
+          .status(400)
+          .json(new ApiError(400, "Gallery id is required"));
+      }
+      const gallery = await prisma.gallery.findUnique({
+        where: {
+          id,
+        },
+      });
+      if (gallery) {
+        return res
+          .status(200)
+          .json(new ApiResponse(200, gallery, "Gallery fetched"));
+      }
+      return res
+        .status(400)
+        .json(new ApiError(400, "unable to fetch the gallery"));
+    } catch (error) {
+      res.status(500).json(new ApiError(500, "Internal server error", error));
+    }
+  }
+
   static async deleteGalleryNotice(req, res) {
     try {
       const user = req.user;

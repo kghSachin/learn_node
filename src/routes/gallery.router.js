@@ -17,4 +17,5 @@ galleryRouter.delete(
   GalleryController.deleteGalleryNotice
 );
 galleryRouter.get("/get_gallery", GalleryController.getGalleryNotice);
+galleryRouter.get("/get_gallery/:id", GalleryController.fetchGalleryById);
 export default galleryRouter;
