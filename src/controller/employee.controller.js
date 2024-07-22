@@ -183,6 +183,7 @@ export class EmployeeController {
       }
       return res.status(404).json(new ApiError(404, "No employee found", []));
     } catch (error) {
+      console.error(error);
       return res
         .status(500)
         .json(new ApiError(500, "Internal server error ", error || []));
