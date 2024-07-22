@@ -47,7 +47,7 @@ export class EmployeeController {
   static async createEmployee(req, res, next) {
     try {
       const { name, title, phoneNumber } = req.body;
-      const localFilePath = req.files?.localFilePath[0]?.path;
+      const localFilePath = req.files?.picture[0]?.path;
       if (!name || !title || !phoneNumber || !localFilePath) {
         return res
           .status(400)
